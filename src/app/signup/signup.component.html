@@ -1,0 +1,16 @@
+<div>
+    <h2>Signup</h2>
+    <form>
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" [(ngModel)]="signupData.username" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" [(ngModel)]="signupData.password" required>
+      </div>
+      <div>
+        <button type="button" (click)="onSignup()">Signup</button>
+      </div>
+    </form>
+</div>
