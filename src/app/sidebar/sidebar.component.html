@@ -1,0 +1,63 @@
+<div class="sidebar">
+    <ul>
+      <li *ngFor="let item of sidebarItems" [class.active]="item === selectedItem" (click)="changeSelectedItem(item)">
+        <a>{{ item }}</a>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="content">
+    <!-- Aquí mostrarás el formulario o la vista correspondiente al ítem seleccionado -->
+<ng-container *ngIf="selectedItem === 'Crear blog'">
+    <form id="create-form" #createForm="ngForm" (ngSubmit)="onCreateForm()">
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" required [(ngModel)]="createBlog.title">
+      
+        <label for="content">Contenido:</label>
+        <textarea id="content" name="content" required [(ngModel)]="createBlog.content"></textarea>
+      
+        <button type="submit">Crear Blog</button>
+      </form>
+</ng-container>
+
+<ng-container *ngIf="selectedItem === 'Actualizar blog'">
+    <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let blog of blogs">
+            <td>{{ blog.title }}</td>
+            <td>{{ blog.content }}</td>
+          </tr>
+        </tbody>
+      </table>
+</ng-container>
+
+<ng-container *ngIf="selectedItem === 'Eliminar blog'">
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Action</th>
+              </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let blog of blogs">
+            <td>{{ blog.title }}</td>
+            <td>{{ blog.content }}</td>
+            <td><button (click)="deleteBlog(blog.id)">Eliminar</button></td>
+          </tr>
+        </tbody>
+      </table>
+</ng-container>
+
+<ng-container *ngIf="selectedItem === 'Ver blog'">
+    
+</ng-container>
+</div>

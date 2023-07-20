@@ -19,8 +19,9 @@ export class LoginComponent {
     try {
       console.log(this.loginData);
       const response = await this.apiService.login(this.loginData.username, this.loginData.password);
+      localStorage.setItem('token', response.data);
       this.router.navigate(['/dashboard']);
-      console.log('Respuesta de login:', response.data);
+      console.log(localStorage.getItem('token'));
     } catch (error) {
       console.error('Error en el login:', error);
     }
