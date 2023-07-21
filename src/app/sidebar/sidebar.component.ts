@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BlogService } from '../blog.service';
 import { NgForm } from '@angular/forms';
+import { UpdateBlog } from './blog.model';
+import { GetAllBlogs } from './GetAllBlogs.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,8 +17,10 @@ export class SidebarComponent implements OnInit{
     title: '',
     content: ''
   };
-  selectedItem: string = 'Crear blog';
-  sidebarItems: string[] = ['Crear blog', 'Actualizar blog', 'Eliminar blog', 'Ver blog'];
+  getAllBlogs: GetAllBlogs[] | null = null;
+  selectedBlog: UpdateBlog | null = null;
+  selectedItem: string = 'Create blog';
+  sidebarItems: string[] = ['Create blog', 'Update blog', 'Delete blog', 'Blog'];
   @ViewChild('createForm', { static: false }) createForm!: NgForm;
 
   constructor(private router: Router, private blogService: BlogService) {}
@@ -25,7 +29,6 @@ export class SidebarComponent implements OnInit{
     this.loadBlogs();
   }
 
-  // Función para cambiar el ítem seleccionado
   changeSelectedItem(item: string) {
     this.selectedItem = item;
   }
@@ -38,7 +41,7 @@ export class SidebarComponent implements OnInit{
           console.log(this.blogs);
         },
         error: (error) => {
-          console.error('Error al cargar los blogs:', error);
+          console.error('Error:', error);
         }
       });
   }
@@ -53,26 +56,36 @@ export class SidebarComponent implements OnInit{
           console.log(this.blogs);
         },
         error: (error) => {
-          console.error('Error al cargar los blogs:', error);
+          console.error('Error:', error);
         }
       });
-      // Aquí puedes utilizar los valores para crear un nuevo blog
-      // por ejemplo, enviar los datos al servidor, etc.
-  
-      // Después de procesar el formulario, podrías resetearlo
       this.createForm.reset();
     }
+  }
+
+  editBlog(blog: UpdateBlog) {
+    this.selectedBlog = { ...blog };
+  }
+
+  updateBlog() {
+    this.blogService.updateBlog(this.selectedBlog).subscribe(
+      () => {
+        this.loadBlogs();
+        this.selectedBlog = null;
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    );
   }
 
   deleteBlog(blogId: number) {
     this.blogService.deleteBlog(blogId).subscribe(
       () => {
-        console.log('Blog eliminado con éxito.');
-        // Actualizar la lista de blogs después de eliminar
         this.loadBlogs();
       },
       error => {
-        console.error('Error al eliminar el blog:', error);
+        console.error('Error:', error);
       }
     );
   }

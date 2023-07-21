@@ -7,20 +7,31 @@
   </div>
   
   <div class="content">
-    <!-- Aquí mostrarás el formulario o la vista correspondiente al ítem seleccionado -->
-<ng-container *ngIf="selectedItem === 'Crear blog'">
-    <form id="create-form" #createForm="ngForm" (ngSubmit)="onCreateForm()">
-        <label for="title">Título:</label>
-        <input type="text" id="title" name="title" required [(ngModel)]="createBlog.title">
-      
-        <label for="content">Contenido:</label>
-        <textarea id="content" name="content" required [(ngModel)]="createBlog.content"></textarea>
-      
-        <button type="submit">Crear Blog</button>
-      </form>
-</ng-container>
 
-<ng-container *ngIf="selectedItem === 'Actualizar blog'">
+    <ng-container *ngIf="selectedItem === 'Create blog'">
+      <div class="card">
+        <div class="card-header">
+          Create Blog
+        </div>
+        <div class="card-body">
+          <form id="create-form" #createForm="ngForm" (ngSubmit)="onCreateForm()">
+            <div class="form-group">
+              <label for="title">Title:</label>
+              <input type="text" id="title" name="title" required [(ngModel)]="createBlog.title">
+            </div>
+          
+            <div class="form-group">
+              <label for="content">Content:</label>
+              <textarea id="content" name="content" required [(ngModel)]="createBlog.content"></textarea>
+            </div>
+          
+            <button type="submit">Create Blog</button>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+
+<ng-container *ngIf="selectedItem === 'Update blog'">
     <table>
         <thead>
           <tr>
@@ -33,12 +44,39 @@
           <tr *ngFor="let blog of blogs">
             <td>{{ blog.title }}</td>
             <td>{{ blog.content }}</td>
+            <td><button (click)="editBlog(blog)">Update</button></td>
           </tr>
         </tbody>
       </table>
+
+      
+
+      <div *ngIf="selectedBlog">
+
+        <div class="card">
+          <div class="card-header">
+            Update Blog
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="updateBlog()">
+              <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" [(ngModel)]="selectedBlog.title" required>
+              </div>
+          
+              <div class="form-group">
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" [(ngModel)]="selectedBlog.content" required></textarea>
+              </div>
+      
+              <button type="submit">Actualizar</button>
+            </form>
+          </div>
+        </div>
+      </div>
 </ng-container>
 
-<ng-container *ngIf="selectedItem === 'Eliminar blog'">
+<ng-container *ngIf="selectedItem === 'Delete blog'">
     <table>
         <thead>
             <tr>
@@ -51,13 +89,29 @@
           <tr *ngFor="let blog of blogs">
             <td>{{ blog.title }}</td>
             <td>{{ blog.content }}</td>
-            <td><button (click)="deleteBlog(blog.id)">Eliminar</button></td>
+            <td><button (click)="deleteBlog(blog.id)">Delete</button></td>
           </tr>
         </tbody>
       </table>
 </ng-container>
 
-<ng-container *ngIf="selectedItem === 'Ver blog'">
-    
+<ng-container *ngIf="selectedItem === 'Blog'">
+      <div *ngFor="let blogData of blogs">
+        <div class="card">
+          <div class="card-header">
+            Blog # {{ blogData.id }}
+          </div>
+          <div class="card-body">
+        <h2>{{ blogData.title }}</h2>
+        <p>{{ blogData.content }}</p>
+        <h3>Comments</h3>
+        <ul>
+          <li *ngFor="let comment of blogData.comments">
+            {{ comment.content }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </ng-container>
 </div>

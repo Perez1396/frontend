@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { GetAllBlogs } from './sidebar/GetAllBlogs.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ export class BlogService {
 
   constructor(private http: HttpClient) {}
 
-  getAllBlogs(): Observable<any> {
-    console.log(this.http.get<any>(this.apiUrl));
+  getAllBlogs(): Observable<GetAllBlogs[]> {
+    console.log(this.http.get<GetAllBlogs[]>(this.apiUrl));
     return this.http.get<any>(this.apiUrl);
   }
 
@@ -23,8 +24,8 @@ export class BlogService {
     return this.http.post<any>(this.apiUrl, blog);
   }
 
-  updateBlog(id: number, blog: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, blog);
+  updateBlog(blog: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${blog.id}`, blog);
   }
 
   deleteBlog(id: number): Observable<any> {
